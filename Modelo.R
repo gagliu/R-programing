@@ -2,20 +2,12 @@
 library("gamm4")
 # library("gam")
 
-base=read.csv("C:/Users/Juan/Dropbox/Proyecto Calibración/Unificación Bases/baseE-B.csv", header = TRUE, sep = ",",dec = ".")
+base=read.csv("C:/Users/JDGiraldo/Dropbox/Proyecto Calibración/Unificación Bases/baseE-B.csv", header = TRUE, sep = ",",dec = ".")
 # base$Hora=as.factor(base$hora)
 # base$Fecha=as.character(base$fecha)
 
 base$comerfA=base$comer
-base$comerLOG=log(base$comer)
-base$beberLOG=log(base$beber+1)
-
 hist(base$comerfA)
-hist(base$comerLOG)
-hist(base$beber)
-hist(base$beberLOG)
-
-shapiro.test(base$beberLOG)
 shapiro.test(base$comerfA)
 
 base$comerfAT=log((base$comerfA+1))
@@ -32,11 +24,6 @@ shapiro.test(base$comerfAT)
 model=gamm4(comerfA~s(hora)+fecha,  random=~ (1|jaula),data=base)
 
 model2=lm(comerfA~hora+fecha+jaula+camara,data=base)
-
-par(mfrow=c(2,2))
-plot(fitted(model2))
-AIC(model2)
-
 juase=model.matrix(model2)
 
 str(base)
@@ -203,7 +190,7 @@ SMOOTH=data.frame(seq(5,18,1))
 colnames(SMOOTH)=c("hora")
 SMOOTH
 
-#calculo de factores en general
+#cakculo de factores en general
 
 FIJOS=data.frame(table(base$fecha))
 colnames(FIJOS)=c("fecha","FREC")
